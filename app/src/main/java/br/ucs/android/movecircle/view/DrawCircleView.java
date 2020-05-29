@@ -1,10 +1,15 @@
 package br.ucs.android.movecircle.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.RectF;
 import android.view.View;
+
+import br.ucs.android.movecircle.CustomViewActivity;
 
 
 public class DrawCircleView extends View {
@@ -61,5 +66,33 @@ public class DrawCircleView extends View {
         // Draw a circle in the canvas.
         canvas.drawCircle(currX, currY, 35, paint);
 
+        Point screenSizes = new Point();
+        ((CustomViewActivity) getContext()).getWindowManager().getDefaultDisplay().getSize(screenSizes);
+        float tileSizeX = screenSizes.x / (float)10;
+        float tileSizeY = screenSizes.y / (float)10;
+
+        int[][] maze = {
+                {0, 0, 0, 0, 0,0, 0, 0, 0, 0 },
+                {0, 1, 1, 1, 1,1, 1, 1, 1, 0 },
+                {0, 1, 0, 1, 0,0, 0, 0, 1, 0 },
+                {0, 1, 0, 0, 0,0, 1, 1, 1, 0 },
+                {0, 1, 0, 0, 0,0, 0, 0, 1, 0 },
+                {0, 1, 1, 1, 1,1, 0, 0, 1, 0 },
+                {0, 0, 0, 0, 0,1, 0, 0, 1, 0 },
+                {0, 0, 0, 0, 0,1, 0, 0, 1, 0 },
+                {0, 1, 1, 1, 1,1, 0, 0, 1, 0 },
+                {0, 0, 0, 0, 0,0, 0, 0, 0, 0 }};
+
+        int tam = 50;
+
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                Paint p1 = new Paint();
+                p1.setColor(Color.GREEN);
+                if(maze[i][j] == 1){
+                    canvas.drawRect(i * tileSizeX, j * tileSizeY, (i + 1) * tileSizeX,(j + 1) * tileSizeY, p1);
+                }
+            }
+        }
     }
 }

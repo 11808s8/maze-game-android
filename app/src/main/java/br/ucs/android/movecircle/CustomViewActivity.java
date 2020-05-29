@@ -1,7 +1,12 @@
 package br.ucs.android.movecircle;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +19,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.RectF;
 
 public class CustomViewActivity extends AppCompatActivity {
     DrawCircleView drawCircleView;
@@ -27,8 +35,8 @@ public class CustomViewActivity extends AppCompatActivity {
             float x = pEvent.values[0];
             float y = pEvent.values[1];
 
-            drawCircleView.setCurrX(x*50);
-            drawCircleView.setCurrY(y*50);
+            drawCircleView.setCurrX(x*20);
+            drawCircleView.setCurrY(y*20);
 
             // Set circle color to blue.
             drawCircleView.setCircleColor(Color.RED);
