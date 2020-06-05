@@ -6,6 +6,7 @@ import android.graphics.Color;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -27,22 +28,28 @@ public class CustomViewActivity extends AppCompatActivity {
     DrawCircleView drawCircleView;
     SensorManager mManager;
     Sensor mAccelerometre;
+    private float x, y;
     SensorEventListener testinhoBr = new SensorEventListener() {
 
         @Override
         public void onSensorChanged(SensorEvent pEvent) {
             // Set drawCircleView currX and currY value to user finger x y ordinate value..
-            float x = pEvent.values[0];
-            float y = pEvent.values[1];
+            if (pEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                x = pEvent.values[0];
+                y = pEvent.values[1];
 
-            drawCircleView.setCurrX(x*20);
-            drawCircleView.setCurrY(y*20);
+                Point screenSizes = new Point();
+                getWindowManager().getDefaultDisplay().getSize(screenSizes);
 
-            // Set circle color to blue.
-            drawCircleView.setCircleColor(Color.RED);
+                drawCircleView.setCurrX(x);
+                drawCircleView.setCurrY(y);
 
-            // Notify drawCircleView to redraw. This will invoke DrawBallView's onDraw() method.
-            drawCircleView.invalidate();
+                // Set circle color to blue.
+                drawCircleView.setCircleColor(Color.RED);
+
+                // Notify drawCircleView to redraw. This will invoke DrawBallView's onDraw() method.
+                drawCircleView.invalidate();
+            }
 
         }
 
@@ -57,7 +64,8 @@ public class CustomViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_view);
         mManager = (SensorManager) this.getBaseContext().getSystemService(Service.SENSOR_SERVICE);
-        mAccelerometre = mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+ mAccelerometre = mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        mAccelerometre = mManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
         // Get the root Linearlayout object.
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.idDrawCircleView);

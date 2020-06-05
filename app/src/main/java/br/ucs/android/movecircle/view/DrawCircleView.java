@@ -7,12 +7,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.View;
 
 import br.ucs.android.movecircle.CustomViewActivity;
 
 
 public class DrawCircleView extends View {
+
+    private Point screenSizes = new Point();
 
     // Record current ball horizontal ordinate.
     private float currX = 100;
@@ -41,17 +44,21 @@ public class DrawCircleView extends View {
     }
 
     public void setCurrX(float currX) {
-        this.currX = currX;
+        if (((this.currX - currX) < screenSizes.x) && ((this.currX - currX) > 0))
+            this.currX -= currX;
     }
 
     public void setCurrY(float currY) {
-        this.currY = currY;
+        if (((this.currY + currY) < (screenSizes.y - 300)) && ((this.currY + currY) > 0))
+            this.currY += currY;
     }
 
     // DrawBallView constructor.
     public DrawCircleView(Context context) {
         super(context);
+        ((CustomViewActivity) getContext()).getWindowManager().getDefaultDisplay().getSize(screenSizes);
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -66,32 +73,40 @@ public class DrawCircleView extends View {
         // Draw a circle in the canvas.
         canvas.drawCircle(currX, currY, 35, paint);
 
-        Point screenSizes = new Point();
-        ((CustomViewActivity) getContext()).getWindowManager().getDefaultDisplay().getSize(screenSizes);
         float tileSizeX = screenSizes.x / (float)10;
         float tileSizeY = screenSizes.y / (float)10;
 
-        int[][] maze = {
-                {0, 0, 0, 0, 0,0, 0, 0, 0, 0 },
-                {0, 1, 1, 1, 1,1, 1, 1, 1, 0 },
-                {0, 1, 0, 1, 0,0, 0, 0, 1, 0 },
-                {0, 1, 0, 0, 0,0, 1, 1, 1, 0 },
-                {0, 1, 0, 0, 0,0, 0, 0, 1, 0 },
-                {0, 1, 1, 1, 1,1, 0, 0, 1, 0 },
-                {0, 0, 0, 0, 0,1, 0, 0, 1, 0 },
-                {0, 0, 0, 0, 0,1, 0, 0, 1, 0 },
-                {0, 1, 1, 1, 1,1, 0, 0, 1, 0 },
-                {0, 0, 0, 0, 0,0, 0, 0, 0, 0 }};
+        Paint p = new Paint();
+        p.setColor(Color.RED);
+        //canvas.drawRect(tileSizeX * currX, tileSizeY * currY, tileSizeX * (currX + 0.5f), tileSizeY * (currY + 0.5f), p);
+        //canvas.drawRect(tileSizeX * currX, tileSizeY * currY, tileSizeX * currX, tileSizeY * currY , p);
 
-        int tam = 50;
+        int[][] maze = {
+                {1, 1, 1, 1, 1, 0, 0, 0, 0, 0 },
+                {0, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
+                {1, 1, 1, 0, 1, 1, 1, 1, 0, 0 },
+                {0, 1, 1, 0, 0, 0, 0, 1, 1, 0 },
+                {0, 1, 1, 1, 1, 1, 0, 0, 1, 0 },
+                {0, 0, 0, 0, 0, 1, 0, 0, 1, 0 },
+                {0, 0, 0, 0, 0, 1, 0, 0, 1, 1 },
+                {0, 0, 0, 0, 0, 1, 0, 0, 0, 3 },
+                {0, 0, 0, 0, 0, 1, 1, 1, 1, 1 },
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }};
+
+        if (((this.currX - currX) < screenSizes.x) && ((this.currX - currX) > 0))
+            this.currX -= currX;
+
+        if (((this.currY + currY) < (screenSizes.y - 300)) && ((this.currY + currY) > 0))
+            this.currY += currY;
 
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 10; j++){
                 Paint p1 = new Paint();
                 p1.setColor(Color.GREEN);
                 if(maze[i][j] == 1){
-                    canvas.drawRect(i * tileSizeX, j * tileSizeY, (i + 1) * tileSizeX,(j + 1) * tileSizeY, p1);
+              //      canvas.drawRect(j * tileSizeX, i * tileSizeY, (j + 1) * tileSizeX,(i + 1) * tileSizeY, p1);
                 }
+
             }
         }
     }
