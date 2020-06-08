@@ -18,7 +18,6 @@ public class CustomViewActivity extends AppCompatActivity {
     Sensor acelerometer;
     private float x, y;
 
-
     // Sensor fun stuff!
     SensorEventListener sensorListener = new SensorEventListener() {
         @Override

@@ -73,16 +73,12 @@ public class MazeView extends View {
         }
     };
 
-    private float currX = 50, currY = 100, TILE_SIZE = 10f, tileSizeX, tileSizeY;
+    private float currX = 50, currY = 100, tileSizeX, tileSizeY;
 
     private int circleColor = Color.BLACK;
 
     public int getCircleColor() {
         return circleColor;
-    }
-
-    public void setCircleColor(int circleColor) {
-        this.circleColor = circleColor;
     }
 
     public int getLevel(){
@@ -200,12 +196,12 @@ public class MazeView extends View {
     public void changeLevel(int level){
         if(level > this.maze.length-1){ // End game condition! Go back to beginning (It's one of those hellish looping games, isn't?)
             this.level = 0;
-            Toast.makeText(getContext().getApplicationContext(), "Você venceu!! Parabéns, não ganhou nada", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext().getApplicationContext(), "Congratulations, you won nothing!", Toast.LENGTH_LONG).show();
         }
         else
         {
             this.level = level;
-            Toast.makeText(getContext().getApplicationContext(), "Próximo nível!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext().getApplicationContext(), "Next Level!", Toast.LENGTH_LONG).show();
         }
         
         this.setStartingPosition();
