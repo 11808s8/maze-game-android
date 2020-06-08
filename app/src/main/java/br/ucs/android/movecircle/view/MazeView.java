@@ -20,44 +20,56 @@ public class MazeView extends View {
     private Vibrator vibrator;
     private AudioManager audioManager;
     private MediaPlayer nextLevelSound, startGameSound;
-    private int level = 0, radius = 35;
+    private int level = 0, radius = 35; // ball radius!
 
     int[][][] maze = {
         {
-        {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1 },
-        {1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, // The last 2 columns are one'd out because of perspective issues
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1 },
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        },
+        {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1 },
+        {1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1 },
         {1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1 },
-        {1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1 },
-        {1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1 },
-        {1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
+        {1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1 },
+        {0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1 },
+        {0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
         {1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1 },
         {1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1 },
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },        
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
         },
         {
-        {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
-        {0, 0, 0, 1, 1, 1, 0, 0, 3, 3, 0, 0, 0, 1, 1, 1 },
-        {0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1 },
-        {0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1 },
-        {0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1 },
-        {0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1 },
-        {0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1 },
-        {0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1 },
-        {0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0 },
-        {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 }
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+        {1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1 },
+        {1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1 },
+        {1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1 },
+        {0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1 },
+        {0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1 },
+        {1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1 },
+        {1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1 },
+        {1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1 },
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1 }
         },
         {
-        {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 },
-        {0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1 },
-        {0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0 },
-        {0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0 },
-        {0, 1, 0, 1, 1, 0, 0, 1, 1, 3, 0, 1, 0, 1, 1, 0 },
-        {0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1 },
-        {0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0 },
-        {0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0 },
-        {0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0 },
-        {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 }
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
+        {1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 3, 1, 1,},
+        {1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1,},
+        {1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1,},
+        {0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1,},
+        {0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1,},
+        {1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1,},
+        {1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,},
+        {1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,}
         }
     };
 
@@ -89,25 +101,33 @@ public class MazeView extends View {
 
         float auxY = this.currY + currY;
         if(!this.hasHitTheWall(this.currX, auxY))
-            if (((auxY) < (screenSizes.y - 300)) && ((auxY) > 0))
+            if (((auxY) < (screenSizes.y - 300)) && ((auxY) > 0)) // -300 on Y axis because that's what we found to fit the screen
                 this.currY += currY;
     }
 
     // DrawBallView constructor.
-    public MazeView(Context context) {
-        super(context);
+    public MazeView(CustomViewActivity customViewActivity) {
+        super(customViewActivity);
         level = 0;
 
-        audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
-        nextLevelSound = MediaPlayer.create(getContext().getApplicationContext(), R.raw.next_level);
-        startGameSound = MediaPlayer.create(getContext().getApplicationContext(), R.raw.start_game);
-        startGameSound.start();
-        ((CustomViewActivity) getContext()).getWindowManager().getDefaultDisplay().getSize(screenSizes);
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        this.tileSizeX = (screenSizes.x/this.maze[this.level].length); // TILE_SIZE;
-        this.tileSizeY = (screenSizes.y/this.maze[this.level][0].length) ;// TILE_SIZE;
+        this.soundCreationStage(customViewActivity);
         
+        customViewActivity.getWindowManager().getDefaultDisplay().getSize(screenSizes);
+        
+        vibrator = (Vibrator) customViewActivity.getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+        this.tileSizeX = (screenSizes.x/this.maze[this.level].length); // tile size for the X axis
+        this.tileSizeY = (screenSizes.y/this.maze[this.level][0].length) ;// tile size for the Y axis
+        this.resetGame();
+    }
+
+    // for the audio manager and media sounds (start game and next level)
+    private void soundCreationStage(CustomViewActivity customViewActivity){
+
+        this.audioManager = (AudioManager) customViewActivity.getSystemService(Context.AUDIO_SERVICE);
+
+        this.nextLevelSound = MediaPlayer.create(customViewActivity.getBaseContext(), R.raw.next_level);
+        this.startGameSound = MediaPlayer.create(customViewActivity.getBaseContext(), R.raw.start_game);
+
     }
 
     @Override
@@ -122,8 +142,10 @@ public class MazeView extends View {
         for(int i = 0; i < maze[this.level].length; i++){
             for(int j = 0; j < maze[this.level][0].length; j++){
                 Paint p1 = new Paint();
-                p1.setColor(Color.WHITE);
+                p1.setColor(Color.WHITE); 
                 if(maze[this.level][i][j] == 1){
+
+                    // Draw them tiles on our screen please
                    canvas.drawRect(i * tileSizeX, j * tileSizeY, (i + 1) * tileSizeX, (j + 1) * tileSizeY, p1);
                 }
 
@@ -131,43 +153,52 @@ public class MazeView extends View {
         }
     }
 
+    // Method name checks out
+    private boolean ballWallCheck(float cX, float cY,int i, int j){
 
-    public boolean hasHitTheWall(float cX, float cY){ // https://stackoverflow.com/a/29477516
+        return  (cX + this.radius >= (i * this.tileSizeX) && cX - this.radius <= ((i + 1) * this.tileSizeX)
+                && cY + this.radius >= (j * this.tileSizeY)
+                && cY - this.radius <= ((j + 1) * this.tileSizeY));
+    
+    }
+
+    public boolean hasHitTheWall(float cX, float cY){ 
+
+            // stop vibrating please
+            this.vibrator.cancel();
 
             for(int i = 0; i < maze[this.level].length; i++){
                 for(int j = 0; j < maze[this.level][0].length; j++){
-                    if(maze[this.level][i][j] == 1){ 
-                        if(cX + this.radius >= (i * this.tileSizeX)
-                           && cX - this.radius <= ((i + 1) * this.tileSizeX)
-                           && cY + this.radius >= (j * this.tileSizeY)
-                           && cY - this.radius <= ((j + 1) * this.tileSizeY))
-                        {
-                            // VIBRA
-                            vibrator.vibrate(2);
-                            return true;
-                        }
+
+                    if(maze[this.level][i][j] == 1 && this.ballWallCheck(cX, cY,i,j)){  // If it's an wall, verify if the ball is contained within it.
+                        
+
+                        // BALL IS CONTAINED! VIBRATE AND RETURN TRUE
+                        vibrator.vibrate(2);
+                        return true;
+                    
                     }
-                    else if(maze[this.level][i][j] == 3){
-                        if(cX + this.radius >= (i * this.tileSizeX)
-                           && cX - this.radius <= ((i + 1) * this.tileSizeX)
-                           && cY + this.radius >= (j * this.tileSizeY)
-                           && cY - this.radius <= ((j + 1) * this.tileSizeY))
-                        {
-                            
+                    else if(maze[this.level][i][j] == 3 && this.ballWallCheck(cX,cY,i,j)){ // If it's an ENDING goal, verify if the ball is contained within it.
+                                                   
+                            // play the funky tune, dj
                             this.nextLevelSound.start();
+
+                            // next level please
                             this.changeLevel(++this.level);
+
+                            // didn't hit a wall!
                             return false;
-                        }
+                        
                     }
                 }
             }
-
-            this.vibrator.cancel();
+            
+            // Nope! Can mooooove freely.
             return false;
         }
     
     public void changeLevel(int level){
-        if(level > this.maze.length){
+        if(level > this.maze.length-1){ // End game condition! Go back to beginning (It's one of those hellish looping games, isn't?)
             this.level = 0;
             Toast.makeText(getContext().getApplicationContext(), "Você venceu!! Parabéns, não ganhou nada", Toast.LENGTH_LONG).show();
         }
@@ -177,14 +208,17 @@ public class MazeView extends View {
             Toast.makeText(getContext().getApplicationContext(), "Próximo nível!", Toast.LENGTH_LONG).show();
         }
         
-        this.currX = 100;
-        this.currY = 100;
+        this.setStartingPosition();
     }
 
-    public void resetGame(){
+    public void resetGame(){ // Reset function for a reset button :)
         this.level = 0;
-        this.currX = 100;
-        this.currY = 50;
+        this.setStartingPosition();
         this.startGameSound.start();
+    }
+
+    private void setStartingPosition(){
+        this.currX = screenSizes.x/2;
+        this.currY = 50;
     }
 }

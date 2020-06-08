@@ -1,6 +1,5 @@
 package br.ucs.android.movecircle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,22 +14,21 @@ import android.widget.TextView;
 
 public class CustomViewActivity extends AppCompatActivity {
     MazeView mazeView;
-    SensorManager mManager;
-    Sensor mAccelerometre;
+    SensorManager sensorManager;
+    Sensor acelerometer;
     private float x, y;
 
+
+    // Sensor fun stuff!
     SensorEventListener sensorListener = new SensorEventListener() {
         @Override
-        public void onSensorChanged(SensorEvent pEvent) {
-            if (pEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                x = pEvent.values[0];
-                y = pEvent.values[1];
-
-                Point screenSizes = new Point();
-                getWindowManager().getDefaultDisplay().getSize(screenSizes);
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                x = sensorEvent.values[0]; // x coords from acelerometer sensor
+                y = sensorEvent.values[1]; // y coords from acelerometer sensor
 
                 TextView level = (TextView) findViewById(R.id.level);
-                level.setText("Level ".concat(String.valueOf(mazeView.getLevel() + 1)));
+                level.setText("Level ".concat(String.valueOf(mazeView.getLevel() + 1))); // what level the user is currently in (counts from 0)
 
                 mazeView.setCurrX(x);
                 mazeView.setCurrY(y);
@@ -49,8 +47,9 @@ public class CustomViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_view);
 
-        mManager = (SensorManager) this.getBaseContext().getSystemService(Service.SENSOR_SERVICE);
-        mAccelerometre = mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // sensor setup
+        sensorManager = (SensorManager) this.getBaseContext().getSystemService(Service.SENSOR_SERVICE);
+        acelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         LinearLayout rootLayout = (LinearLayout) findViewById(R.id.idDrawCircleView);
 
@@ -58,10 +57,10 @@ public class CustomViewActivity extends AppCompatActivity {
         mazeView.setMinimumWidth(500);
         mazeView.setMinimumHeight(800);
 
-        rootLayout.addView(mazeView);
+        rootLayout.addView(this.mazeView);
 
         final Button restart = (Button) findViewById(R.id.restartButton);
-        restart.setOnClickListener(new View.OnClickListener() {
+        restart.setOnClickListener(new View.OnClickListener() { // Reset the game button
             @Override
             public void onClick(View v) {
                 mazeView.resetGame();
@@ -72,6 +71,6 @@ public class CustomViewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mManager.registerListener(sensorListener, mAccelerometre, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(sensorListener, acelerometer, SensorManager.SENSOR_DELAY_GAME);
     }
 }
